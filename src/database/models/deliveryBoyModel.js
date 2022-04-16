@@ -1,0 +1,60 @@
+const mongoose = require('mongoose');
+var mongoosePaginate = require("mongoose-aggregate-paginate-v2");
+const deliveryBoySchema = mongoose.Schema({
+    user_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'auth_users',
+        required:true
+    },
+    address:{
+        type:String,
+        lowercase:true,
+        required:true
+    },
+    pincode:{
+        type:Number,
+        required:true
+    },
+    service_area:{
+        type:String,
+        required:true
+    },
+    work_from_time:{
+        type:String,
+        required:true
+    } ,
+    work_till_time:{
+        type:String,
+        required:true
+    },
+      adhaarCardFront:{
+        type:String,
+        required:true
+    },
+    adhaarCardBack:{
+        type:String,
+        required:true
+    },
+    drivingLiscence:{
+        type:String,
+        required:true
+    },
+    pancard:{
+        type:String,
+        required:true
+    },
+    bankAccount:{
+        type:String,
+        required:true
+    },
+    cancelCheque:{
+        type:String,
+        required:true
+    },
+    bikeRc:{
+        type:String,
+        required:true
+    }
+});
+deliveryBoySchema.plugin(mongoosePaginate);
+module.exports = mongoose.model('delivery_boy',deliveryBoySchema)

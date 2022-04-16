@@ -1,0 +1,17 @@
+node_modules
+opencmd.py
+src/attribute/node_modules
+src/categories/node_modules
+src/parmission/node_modules
+src/products/node_modules
+src/user/node_modules
+src/area/node_modules
+src/carts/node_modules
+src/test
+src/area/node_modules
+src/coupans/node_modules
+src/delivery/node_modules
+src/offers/node_modules
+src/vendorProduct
+src/vendor/node_modules
+src/customerAddress

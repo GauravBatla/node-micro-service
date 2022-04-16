@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=720">
+	<title>Order No. {{$order->order_no}} invoice</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+	<style>
+		* {
+			color: rgb(82, 129, 53);
+		}
+		body {
+			min-width: 300px;
+		}
+		.stamp-bg {
+			background-image: url('/assets/img/stamp.png');
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: 30rem;
+		}
+	</style>
+</head>
+<body>
+	<div class="col-12 bg-secondary">
+		<div class="row justify-content-center">
+			<div class="col-md-2">
+			</div>
+			<div class="col-md-8 bg-white" id="invoice">
+				<div class="col-12 p-5">
+					<div class="row justify-content-between align-items-center">
+						<div class="col-md-6">
+							<h1 class="font-weight-bold">
+								INVOICE
+							</h1>
+						</div>
+						<div class="col-md-6">
+							<div class="row justify-content-end align-items-center">
+								<img src="/assets/img/logo.png" alt="Vegcorb" height="80" width="200">
+							</div>
+						</div>
+					</div>
+					<div class="row justify-content-between mt-3">
+					<table class="table table-bordered">
+						<tbody>
+							<tr>
+								<td colspan=2><b>Date:  {{Carbon\Carbon::parse($order->order_date)->format('d/m/Y')}}</b></td>
+								<td><b>Address:  Road no. 16, Rajeev Nagar, </b></td>
+							</tr>
+							<tr>
+								<td colspan=2><b>Order Id:  {{$order->order_no}} </b> </td>
+								<td> <b>Patna, Bihar, India, 800024 </b></td>
+							</tr>
+							<tr>
+								<td colspan=2></td>
+								<td> <b>+91 9709000043 </b></td>
+							</tr>
+							<tr>
+								<td colspan=2></td>
+								<td> <b>vegcorb@gmail.com </b></td>
+							</tr>
+							<tr>
+								<td> <b>Bill To: </b></td>
+								<td> <b>{{$order->customer->name}} </b></td>
+								<td> <b>Delivered by: {{$order->customer->name}} </b> </td>
+							</tr>
+							<tr>
+								<td></td>
+								<td> <b>+91 {{$order->customer->phone}} </b></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td> <b>{{$order->delivered_address}} </b></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+</div>
+					
+					<div class="mt-4 ">
+						<table class="table table-bordered stamp-bg">
+							<thead>
+								<tr>
+									<th style="border-color:#a4b998;">
+										<h5 class="text-dark font-weight-bold">
+											S.no.
+										</h5>
+									</th>
+									<th style="border-color:#a4b998;">
+										<h5 class="text-dark font-weight-bold">
+											Products
+										</h5>
+									</th>
+									<th style="border-color:#a4b998;">
+										<h5 class="text-dark font-weight-bold">
+											Unit
+										</h5>
+									</th>
+									<th style="border-color:#a4b998;">
+										<h5 class="text-dark font-weight-bold">
+											Unit Price
+										</h5>
+									</th>
+									<th style="border-color:#a4b998;">
+										<h5 class="text-dark font-weight-bold">
+											Qty.
+										</h5>
+									</th>
+									<th style="border-color:#a4b998;">
+										<h5 class="text-dark font-weight-bold">
+											Amount
+										</h5>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								@php
+								$sn = 1;
+								@endphp
+								@foreach($order->orderItems as $item)
+								<tr>
+									<td style="border-color:#a4b998;">
+										{{$sn++}}
+									</td>
+									<td style="border-color:#a4b998;">
+										{{$item->name}}
+										@if(!empty($item->combo_contains))
+										{{$item->combo_contains}}
+										@endif
+									</td>
+									<td style="border-color:#a4b998;">
+										{{$item->unit_amount." ".$item->unit_type}}
+									</td>
+									<td style="border-color:#a4b998;">
+										{{$item->discountedPrice? $item->discountedPrice : $item->price}}
+									</td>
+									<td style="border-color:#a4b998;">
+										{{$item->order_quantity}}
+									</td>
+									<td style="border-color:#a4b998;">
+										{{$item->order_price}}
+									</td>
+								</tr>
+								@endforeach
+								<tr>
+									<td style="border-color:#a4b998;"></td>
+									<td style="border-color:#a4b998;"></td>
+									<td style="border-color:#a4b998;"></td>
+									<td style="border-color:#a4b998;"></td>
+									<td style="border-color:#a4b998;"></td>
+									<td style="border-color:#a4b998;"></td>
+								</tr>
+								<tr>
+									<td style="border-color:#a4b998;" colspan="4"></td>
+									<td style="border-color:#a4b998;" class="font-weight-bold">
+										Subtotal
+									</td>
+									<td style="border-color:#a4b998;" class="font-weight-bold">
+										{{$order->order_price}}
+									</td>
+								</tr>
+								<tr>
+									<td style="border-color:#a4b998;" colspan="4"></td>
+									<td style="border-color:#a4b998;" class="font-weight-bold">
+										Discount
+									</td>
+									<td style="border-color:#a4b998;" class="font-weight-bold">
+										{{$order->total_discount > 0 ? $order->total_discount : 'N/A'}}
+									</td>
+								</tr>
+								<tr>
+									<td style="border-color:#a4b998;" colspan="4"></td>
+									<td style="border-color:#a4b998;" class="font-weight-bold">
+										Delivery Charge
+									</td>
+									<td style="border-color:#a4b998;" class="font-weight-bold">
+										{{$order->delivery_charge > 0 ? $order->delivery_charge : 'Free'}}
+									</td>
+								</tr>
+								<tr>
+									<td style="border-color:#a4b998;" colspan="4"></td>
+									<td style="border-color:#a4b998;" class="font-weight-bold">
+										Total Amount
+									</td>
+									<td style="border-color:#a4b998;" class="font-weight-bold">
+										{{$order->final_amount}}
+									</td>
+								</tr>
+								<tr>
+									<td style="border-color:#a4b998;" colspan="6">
+										<div class="row justify-content-between align-items-center">
+											<div class="col-2">
+												<img src="{{asset('assets/qrcode.jpeg')}}" alt="Qr" style="width:100%;">
+											</div>
+											<div class="col-8">
+												<span class="font-weight-bold">
+													To pay via UPI, please scan the QR code.
+												</span>
+												<br />
+												<span class="font-weight-bold">
+													Because of great customers like you, we’re exciting that Vegcorb is growing so fast. Your
+												</span>
+												<br />
+												<span class="font-weight-bold">
+													support means the world to us! Thank you for your order
+												</span>
+												<br />
+												<br />
+												<span class="font-weight-bold">
+													Feel free to contact us at given number. We are here to help you over your first ring.
+												</span>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td style="border-color:#a4b998;" colspan="6">
+										<h5 class="text-center font-weight-bold">
+											This is a system generated invoice, signature not required
+										</h5>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-2 mt-5">
+				<button class="btn btn-success" id="print">
+					Print / Download
+				</button>
+			</div>
+		</div>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		const invoice = document.getElementById('invoice').innerHTML
+		// document.body.innerHTML = invoice
+		$("#print").on('click', function() {
+			const invoice = document.getElementById('invoice').innerHTML
+			const body = document.body.innerHTML
+			document.body.innerHTML = invoice
+			window.print()
+			// document.body.innerHTML = body // not working
+		})
+	</script>
+</body>
+</html>
